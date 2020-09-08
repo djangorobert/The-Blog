@@ -1,0 +1,52 @@
+{% extends 'posts/base.html' %}
+
+
+{% block content %}
+<!-- CSS only -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+<!-- JS, Popper.js, and jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
+<div class="jumbotron">
+    <h1 class="display-4">Nature Blog</h1>
+    <p class="lead">The go to source for all things Trails and Parks and Health for Austin Texas.</p>
+    <hr class="my-4">
+   
+  </div>
+
+
+<div class='container'>
+    <div class='row'>
+        {% for object in post_list %}
+        <div class="col-4">
+           
+            <div class="card" style="width: 18rem;">
+                <img src="{{ object.thumbnail.url }}" class="card-img-top" alt="...">
+                <div class="card-body">
+                <a href="{{ object.get_absolute_url }}">
+                  <h5 class="card-title"> {{ object.title }}</h5></a>
+                  <p class="card-text">{{ object.content|truncatechars:40 }}</p>
+                  <hr/>
+                  <p class='card-text'>
+                      <span><i class="far fa-comments ml-2"></i>{{ object.get_comment_count }}</span>
+                      <span><i class="far fa-eye ml-2"></i>{{ object.get_view_count }}</span>
+                      <span><i class="far fa-thumbs-up ml-2"></i>{{ object.get_like_count }}</span>
+                  </p>
+                  <p class='card-text'>
+                      Posted: {{ object.publish_date|timesince }}
+                  </p>
+                  
+                  
+                </div>
+              </div>
+            
+        </div>
+         {% endfor %}
+</div>
+</div>
+
+
+{% endblock %}

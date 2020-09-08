@@ -1,0 +1,59 @@
+{% extends 'posts/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class='row'>
+        <div class='col-4 offset-4'>
+
+        <div class='card'>
+                <h1>{{ object.title|title }}</h1>
+                <img src="{{ object.thumbnail.url }}" class="card-img-top" alt="">
+        <hr/>
+        <div style='padding: 10px'>
+                <span><i class="far fa-comments ml-2"></i>{{ object.get_comment_count }}</span>
+                <span><i class="far fa-eye ml-2"></i>{{ object.get_view_count }}</span>
+                <span><i class="far fa-thumbs-up ml-2"></i>{{ object.get_like_count }}</span>
+                <span class='float-right'>Posted {{ object.publish_date|timesince }} ago</span>
+        </div>
+        <hr/>
+        <div>
+                <div style='padding: 10px'>
+                <p>{{ object.content }}</p>
+                <h4>Enjoy give a like thanks</h4>
+                <a class='text-muted' href="{{ object.get_like_url }}">
+                        <i class='fas fa-thumbs-up fa-lg'></i>
+                        {{ object.get_like_count }}
+                </a>
+
+                <hr/>
+               {% if request.user.is_authenticated %}
+                <h4>Leave a comment</h4>
+                <form method="POST">
+                        {% csrf_token %}
+                        {{ form|crispy }} 
+                        <button class='btn btn-primary' type='submit'>Comment</button>
+                </form>
+                <hr/>
+                
+                        {% else %}
+                        <a href="{% url 'account_login' %}" class="btn btn-primary btn-block">Login to Comment</a>
+                        {% endif %}
+               <hr/>
+                <h5>Latest comments:</h5>
+                {% for comment in object.comments %}
+                
+                        <div>
+                                <small>User: {{ comment.user.username }}</small>
+                                <p>{{ comment.content }}</p>
+                                <br>
+                                <small>added: {{ comment.timestamp|timesince }} ago</small>
+                        </div>
+                        <hr/>
+                        {% endfor %}        
+        
+        </div>
+             
+   </div>
+   </div>
+</div>
+{% endblock %}
